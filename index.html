@@ -1,0 +1,106 @@
+<html>
+<body>
+<h1>Steam</h1>
+<p id="res"></p>
+<script type="text/javascript">
+//var func1 = function(v1,v2){return v1+v2;}
+
+//alert(func1(1,2));
+
+//function f(func,v1,v2){return func(v1,v2);}
+//alert(f(func1,1,1));
+</script>
+<script src = "Xsteam-js.2.js"></script>
+
+<script>
+function getCheckVal(name){
+	var obj = document.getElementsByName(name);
+	var check_val = [];
+	for(let i = 0; i < obj.length; ++i){
+		if(obj[i].checked){
+			check_val.push(obj[i].value);
+		}
+	}	
+	//console.log(check_val);
+	return check_val;	
+}
+
+function setDisable(){
+	var invar = document.getElementsByClassName("invar");
+	for(let k in invar){
+		invar[k].disabled="disabled";
+	}
+
+	var check_val = getCheckVal('inname');
+
+	for(let i in check_val){
+		document.getElementById(check_val[i]).disabled='';
+	}
+	
+	var obj = document.getElementsByName("inname");	
+	for(let n in obj){
+		obj[n].disabled = '';
+	}
+
+	if(check_val.length > 1){
+		for(let n in obj){
+			if(!obj[n].checked){
+				obj[n].disabled = "disabled";
+			}
+		}
+	}
+}
+
+function getCheckStr(name){
+	var s ='';
+	var check_val = getCheckVal(name);
+	for(let k in check_val){
+		s += check_val[k];
+	}
+	return s;
+}
+
+function getInVar(){
+	var check_val = getCheckVal('inname');
+	var invar = [];
+	for(let k in check_val){
+		invar.push(document.getElementById(check_val[k]).value);
+	}
+	return invar;
+}
+
+function cal(){
+	var fun = getCheckStr('inname');
+	var in1 = -9995;
+	var in2 = -9995;
+	var InVar =getInVar();
+	
+	if (InVar.length == 1){
+		in1 = parseFloat(InVar[0]);
+		//in2 = -9995;
+	}
+	else if(InVar.length == 2){
+		in1 = parseFloat(InVar[0]);
+		in2 = parseFloat(InVar[1]);
+	}
+
+	var res = XSteam(fun,in1,in2);
+
+	document.getElementById('res').innerHTML = '焓值'+res.h;
+}
+
+console.log(H_PT(1,200));
+
+</script>
+
+<input type="checkbox" name="inname" value="p" onclick="setDisable()"/> 压力 
+<input type="number" id="p" class="invar" name="p" disabled="disabled"/> MPa </br>
+<input type="checkbox" name="inname" value="t" onclick="setDisable()" /> 温度 
+<input type="number" id="t" class="invar" name="t" disabled="disabled" /> ℃  </br>
+<input type="checkbox" name="inname" value="h" onclick="setDisable()" /> 比焓 
+<input type="number" id="h" class="invar" name="h" disabled="disabled" /> kj/kg  </br>
+<button onclick="cal()">submit</button>
+</body>
+
+
+</html>
